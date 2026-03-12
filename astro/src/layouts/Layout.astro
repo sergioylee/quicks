@@ -1,5 +1,7 @@
 ---
 import "../styles/global.css";
+import "@fontsource-variable/inter/wght.css";
+import "@fontsource-variable/montserrat/wght.css";
 
 interface Props {
   title?: string;
@@ -8,9 +10,9 @@ interface Props {
 }
 
 const {
-  title = "My Site",
-  description = "",
-  ogImage = "/og-image.png",
+  title = "{{SITENAME}}",
+  description = "{{DESCRIPTION}}",
+  ogImage = "{{OG_IMAGE}}",
 } = Astro.props;
 
 const canonicalURL = Astro.site
@@ -19,7 +21,7 @@ const canonicalURL = Astro.site
 ---
 
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

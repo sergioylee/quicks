@@ -3,5 +3,7 @@ c/build
 
 ts/dist
 ts/types
-ts/node_modules
-ts/pnpm-lock.yaml
+
+**/node_modules
+**/pnpm-lock.yaml
+

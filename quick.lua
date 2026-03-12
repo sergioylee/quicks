@@ -149,6 +149,57 @@ function open_editor(file_path)
   end
 end
 
+function to_kebab_case(str)
+  return str:lower():gsub("[%s_]+", "-"):gsub("[^%a%d%-]", "")
+end
+
+function create_astro_project(site_name)
+  local dir_name = to_kebab_case(site_name)
+
+  if path_exists(dir_name) then
+    print("Directory '" .. dir_name .. "' already exists")
+    return false
+  end
+
+  local template_dir = path_join(REPOS, "quicks", "astro")
+  if not path_exists(template_dir) then
+    print("Template directory not found: " .. template_dir)
+    return false
+  end
+
+  local success, _ = copy_directory(template_dir, dir_name)
+  if not success then
+    print("Error copying template directory")
+    return false
+  end
+
+  local domain = dir_name .. ".com"
+  local description = "Welcome to " .. site_name .. "."
+
+  local files_to_update = {
+    path_join(dir_name, "astro.config.mjs"),
+    path_join(dir_name, "src", "layouts", "Layout.astro"),
+    path_join(dir_name, "src", "pages", "index.astro"),
+  }
+
+  for _, file_path in ipairs(files_to_update) do
+    local content, err = read_file(file_path)
+    if content then
+      content = content:gsub("{{SITENAME}}", site_name)
+      content = content:gsub("{{DOMAIN}}", domain)
+      content = content:gsub("{{DESCRIPTION}}", description)
+      content = content:gsub("{{OG_IMAGE}}", "/og.png")
+      write_file(file_path, content)
+    else
+      print("Warning: " .. (err or "could not read " .. file_path))
+    end
+  end
+
+  local main_file = path_join(dir_name, "src", "pages", "index.astro")
+  open_editor(main_file)
+  return true
+end
+
 function create_csharp_project(program_name)
   if path_exists(program_name) then
     print("Directory '" .. program_name .. "' already exists")
@@ -203,7 +254,7 @@ end
 function quick(language, program_name)
   if not language or not program_name then
     print("Usage: lua quick.lua <language> <program_name>")
-    print("Supported languages: c, cpp, cs, ts, odin, rust")
+    print("Supported languages: c, cpp, cs, ts, odin, rust, astro")
     return
   end
 
@@ -216,6 +267,7 @@ function quick(language, program_name)
     ts = "ts",
     odin = "odin",
     rust = "rust",
+    astro = "astro",
   }
 
   if not template_mapping[language] then
@@ -226,6 +278,12 @@ function quick(language, program_name)
   -- Handle C# differently
   if language == "cs" then
     create_csharp_project(program_name)
+    return
+  end
+
+  -- Handle Astro: program_name is treated as the site name
+  if language == "astro" then
+    create_astro_project(program_name)
     return
   end
 
@@ -281,5 +339,5 @@ if arg and #arg >= 2 then
   quick(arg[1], arg[2])
 else
   print("Usage: lua quick.lua <language> <program_name>")
-  print("Supported languages: c, cpp, cs, ts, odin, rust")
+  print("Supported languages: c, cpp, cs, ts, odin, rust, astro")
 end

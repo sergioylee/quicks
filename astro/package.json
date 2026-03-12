@@ -12,9 +12,12 @@
     "astro": "astro",
     "format": "biome format . --write",
     "lint": "biome lint .",
-    "check": "biome check . --write"
+    "check": "biome check . --write",
+    "typecheck": "astro check"
   },
   "dependencies": {
+    "@fontsource-variable/inter": "5.2.8",
+    "@fontsource-variable/montserrat": "5.2.8",
     "@lucide/astro": "0.575.0",
     "@tailwindcss/vite": "4.2.1",
     "astro": "5.16.16",

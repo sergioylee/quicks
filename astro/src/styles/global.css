@@ -1,4 +1,10 @@
 @import "tailwindcss";
+@plugin "daisyui" {
+  themes: dark --default;
+}
+
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/montserrat";
 
 *,
 *::before,
@@ -20,9 +26,15 @@ body {
 }
 
 body {
+  font-family: "Inter Variable", sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Montserrat Variable", sans-serif;
+  overflow-wrap: break-word;
 }
 
 img,
@@ -41,12 +53,6 @@ select {
   font: inherit;
 }
 
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+p {
   overflow-wrap: break-word;
 }

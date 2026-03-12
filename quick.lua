@@ -13,7 +13,7 @@ function get_current_date()
 end
 
 function path_exists(path)
-  local ok, err, code = os.rename(file, file)
+  local ok, err, code = os.rename(path, path)
   if not ok then
     if code == 13 then
       -- Permission denied, but it exists
